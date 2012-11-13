@@ -1,0 +1,20 @@
+{
+  "name": "add-to-sprint",
+  "preferGlobal": "true",
+  "version": "0.0.1",
+  "author": "Joe Smith <jsmith@twitter.com>",
+  "description": "Add a jira issue (project-###) to the current sprint.",
+  "bin": {
+    "add-to-sprint": "./bin/add-to-sprint"
+  },
+  "main": "./lib/add-to-sprint",
+  "dependencies": {
+    "colors"  : "0.6.x"
+  },
+  "devDependencies": {
+    "mocha": "1.7.x"
+  },
+  "engines": {
+    "node": "0.8.x"
+  }
+}
