@@ -1,7 +1,7 @@
 {
   "name": "add-to-jira-sprint",
   "preferGlobal": "true",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Joe Smith <jsmith@twitter.com>",
   "description": "Add a jira issue (project-###) to the current sprint.",
   "bin": {
