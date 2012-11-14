@@ -11,7 +11,8 @@
   "dependencies": {
     "colors"   : "0.6.x",
     "jira"     : "git://github.com/Yasumoto/node-jira.git",
-    "optimist" : "0.3.x"
+    "optimist" : "0.3.x",
+    "prompt"   : "0.2.x"
   },
   "devDependencies": {
     "mocha": "1.7.x"

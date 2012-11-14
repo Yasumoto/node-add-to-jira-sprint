@@ -1,23 +1,71 @@
 #!/usr/bin/env coffee
 
+colors    = require "colors"
+fs        = require "fs"
+prompt    = require "prompt"
+util      = require "util"
 {JiraApi} = require "jira"
-colors = require "colors"
-util = require 'util'
 
 argv = require("optimist")
         .usage("Usage: $0 [PROJECT]-[TICKET_NUMBER]")
         .argv
 
-config = require "../.config.json"
+config = {}
 
-ticket_id = argv._[0]
-project_name = ticket_id.split('-')[0]
+config_file = __dirname + "/../.config.json"
 
-jira = new JiraApi 'http', config.hostname, '80', config.user, config.password, 'latest'
+finalize_config = () ->
+  ticket_id = argv._[0]
+  if not ticket_id?
+    console.error "Need a ticket argument"
+    process.exit(1)
+  project_name = ticket_id.split("-")[0]
 
-jira.findRapidView project_name, (error, rapid_view) ->
-  console.error error.red if error?
-  jira.getLastSprintForRapidView rapid_view.id, (error, last_sprint) ->
-    console.error error.red if error?
-    jira.addIssueToSprint ticket_id, last_sprint.id, (error) ->
-      console.error error if error?
+  schema = {
+    properties: {
+      password: {
+        required: true,
+        hidden: true
+      }
+    }
+  }
+  prompt.start()
+  prompt.get schema, (err, result) ->
+    config.password = result.password
+
+    add_to_sprint(project_name, ticket_id)
+
+add_to_sprint = (project_name, ticket_id) ->
+    jira = new JiraApi "http", config.hostname, "80", config.username, config.password, "latest"
+    jira.findRapidView project_name, (error, rapid_view) ->
+      console.error error.red if error?
+      jira.getLastSprintForRapidView rapid_view.id, (error, last_sprint) ->
+        console.error error.red if error?
+        jira.addIssueToSprint ticket_id, last_sprint.id, (error) ->
+          console.error error if error?
+
+if not fs.existsSync config_file
+  console.log "No config file detected. Generating now."
+  schema = {
+    properties: {
+      username: {
+        pattern: /^[a-zA-Z]+$/,
+        message: 'Name must be only letters',
+        required: true
+      },
+      hostname: {
+        required: true
+      }
+    }
+  }
+  prompt.start()
+  prompt.get schema, (err, result) ->
+    config.hostname = result.hostname
+    config.username = result.username
+    fs.writeFile config_file, JSON.stringify(config), 'utf-8', ->
+      finalize_config()
+else
+  config = require config_file
+  finalize_config()
+
+
