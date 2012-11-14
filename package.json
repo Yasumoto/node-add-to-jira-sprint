@@ -1,5 +1,5 @@
 {
-  "name": "add-to-sprint",
+  "name": "add-to-jira-sprint",
   "preferGlobal": "true",
   "version": "0.0.1",
   "author": "Joe Smith <jsmith@twitter.com>",
