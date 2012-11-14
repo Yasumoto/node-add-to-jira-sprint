@@ -9,7 +9,9 @@
   },
   "main": "./lib/add-to-sprint",
   "dependencies": {
-    "colors"  : "0.6.x"
+    "colors"   : "0.6.x",
+    "jira"     : "git://github.com/Yasumoto/node-jira.git",
+    "optimist" : "0.3.x"
   },
   "devDependencies": {
     "mocha": "1.7.x"
